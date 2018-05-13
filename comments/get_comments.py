@@ -3,7 +3,7 @@
 @author: Sunmouren
 @contact: sunxuechao1024@gmail.com
 @time: 2018/5/12 22:42
-@desc: 爬去网易云音乐评论
+@desc: 爬去网易云音乐全部评论
 """
 
 import base64
@@ -107,5 +107,5 @@ if __name__ == '__main__':
     url = 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_31877636?csrf_token='
     pages = get_pages(url)
     comments = get_comments(url=url, pages=pages)
-    save_to_file(comments=comments, filename="chezhan.txt")
+    save_to_file(comments=comments, filename="test.txt")
 
