@@ -16,7 +16,7 @@ if __name__ == '__main__':
     cut_text = jieba.cut(text)
     result = "/".join(cut_text)
     # 生成词云图, xingkai.ttf是中文字体，用到它是因为WordCloud本身好像没有支持中文的。
-    wordcloud = WordCloud(font_path=r"E:\PycharmWorkPlace\wordcloud_demo\xingkai.ttf", background_color='white',
+    wordcloud = WordCloud(font_path="xingkai.ttf", background_color='white',
                           width=800,
                           height=600, max_font_size=50,
                           max_words=1000, mode='RGBA',colormap='pink')

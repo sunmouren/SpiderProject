@@ -8,15 +8,13 @@
 
 import base64
 import json
-import codecs
-
 import requests
 from Crypto.Cipher import AES
 
 headers = {
     'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Safari/537.36",
-    'Cookie': "_ntes_nuid=bae6bddbcaae44ff2fb705f942b04429; usertrack=ezq0plqLoYlIU74bMVu/Ag==; _ntes_nnid=06b1f38610caa21ede9d767ad2370183,1519100299969; _ga=GA1.2.1528031140.1519100301; __f_=1521282707045; P_INFO=m15595757119_1@163.com|1524116518|0|mail163|00&99|CN&1524116454&mailsettings#zhj&330300#10#0#0|155119&1|mailsettings|15595757119@163.com; nts_mail_user=15595757119@163.com:-1:1; _iuqxldmzr_=32; WM_TID=bi2ul0cBG7fnlIOPLQRMlothc2PY0i5k; __e_=1525966530859; JSESSIONID-WYYY=yCXaNbRPwzwYr0mj7kc%2F31mUGrgjXDUhwcJUpWtfXRC3J33m0lJtADdIqI2H5g3fkFTtptyQtzJgxN1axfJxUZ0uv7fPUrT1kvaGuG0c2uI2Ge05oAfi6PpdT5281uNH4KmF3uS7Mqm3up8S5cEN47vDwnOQCMPt4WmGAl%2BmNeKiv%5C9p%3A1526119472806; __utma=94650624.1528031140.1519100301.1525754678.1526117673.2; __utmc=94650624; __utmz=94650624.1526117673.2.2.utmcsr=sogou.com|utmccn=(referral)|utmcmd=referral|utmcct=/link; __utmb=94650624.5.10.1526117673",
-    'Referer': "http://music.163.com/"
+    'Cookie': "_ntes_nuid=bae6bddbcaae44ff2fb705f942b04429; usertrack=ezq0plqLoYlIU74bMVu/Ag==; _ntes_nnid=06b1f38610caa21ede9d767ad2370183,1519100299969; _ga=GA1.2.1528031140.1519100301; __f_=1521282707045; P_INFO=m15595757119_1@163.com|1524116518|0|mail163|00&99|CN&1524116454&mailsettings#zhj&330300#10#0#0|155119&1|mailsettings|15595757119@163.com; nts_mail_user=15595757119@163.com:-1:1; _iuqxldmzr_=32; WM_TID=bi2ul0cBG7fnlIOPLQRMlothc2PY0i5k; __e_=1525966530859; JSESSIONID-WYYY=GgQ1eQy6782oP7QlxUX57x16I0dq%2BNMJ5SA%2Bdf%2BeX4%2BYATkWRQBV%2BawbdFXEvDXnS5pwMoigsbpWnky3hIP874BEPYgoR8%5CruSmZFFbEsDB1Ydg2Gj%5CTWcUmeMq3mEGuZW6HDV0eDp9WI7yCKtlulbpr%2BduSZGDU1tnVeJy4%2FprfXN7z%3A1526380855141; __utma=94650624.1528031140.1519100301.1526203078.1526379055.7; __utmc=94650624; __utmz=94650624.1526379055.7.5.utmcsr=sogou.com|utmccn=(referral)|utmcmd=referral|utmcct=/link; __utmb=94650624.17.10.1526379055",
+    'Referer': "http://music.163.com/song?id=557579631"
 }
 
 first_param = "{rid:\"\", offset:\"0\", total:\"true\", limit:\"20\", csrf_token:\"\"}"
@@ -78,9 +76,8 @@ def get_pages(url):
         pages = comments_num / 20
     else:
         pages = int(comments_num / 20) + 1
-    print("一共有%d页评论, %条评论" % (pages, comments_num))
+    print("一共有%d页评论, %d条评论" % (pages, comments_num))
     return pages
-
 
 def get_comments(url, pages):
     comments = list()
@@ -97,14 +94,14 @@ def get_comments(url, pages):
 
 
 def save_to_file(comments, filename):
-    with codecs.open(filename, 'a', encoding='utf-8') as f:
+    with open(filename, 'a', encoding='utf-8') as f:
         for comment in comments:
-            f.write(comment)
+            f.write(comment + '\n')
     print("写入成功!")
 
 
 if __name__ == '__main__':
-    url = 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_31877636?csrf_token='
+    url = 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_557579631?csrf_token='
     pages = get_pages(url)
     comments = get_comments(url=url, pages=pages)
     save_to_file(comments=comments, filename="test.txt")
