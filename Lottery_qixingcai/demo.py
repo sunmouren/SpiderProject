@@ -83,7 +83,10 @@ class Lottery():
 
 
 if __name__ == '__main__':
-    lottery_1690 = Lottery(issue=1690)
-    num_int_lists = lottery_1690.get_int_numbers_lists()
-    data = numpy.array(num_int_lists)
+    # lottery_1690 = Lottery(issue=1690)
+    # num_int_lists = lottery_1690.get_int_numbers_lists()
+    # array_qixingcai = numpy.array(num_int_lists)
+    # print(array_qixingcai)
+    # numpy.save("qixingcai.npy", array_qixingcai)
+    data = numpy.load("qixingcai.npy")
     print(data)
