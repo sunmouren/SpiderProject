@@ -11,6 +11,12 @@ import json
 import requests
 from Crypto.Cipher import AES
 
+
+import base64
+import json
+import requests
+from Crypto.Cipher import AES
+
 headers = {
     'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Safari/537.36",
     'Cookie': "_ntes_nuid=bae6bddbcaae44ff2fb705f942b04429; usertrack=ezq0plqLoYlIU74bMVu/Ag==; _ntes_nnid=06b1f38610caa21ede9d767ad2370183,1519100299969; _ga=GA1.2.1528031140.1519100301; __f_=1521282707045; P_INFO=m15595757119_1@163.com|1524116518|0|mail163|00&99|CN&1524116454&mailsettings#zhj&330300#10#0#0|155119&1|mailsettings|15595757119@163.com; nts_mail_user=15595757119@163.com:-1:1; _iuqxldmzr_=32; WM_TID=bi2ul0cBG7fnlIOPLQRMlothc2PY0i5k; __e_=1525966530859; JSESSIONID-WYYY=GgQ1eQy6782oP7QlxUX57x16I0dq%2BNMJ5SA%2Bdf%2BeX4%2BYATkWRQBV%2BawbdFXEvDXnS5pwMoigsbpWnky3hIP874BEPYgoR8%5CruSmZFFbEsDB1Ydg2Gj%5CTWcUmeMq3mEGuZW6HDV0eDp9WI7yCKtlulbpr%2BduSZGDU1tnVeJy4%2FprfXN7z%3A1526380855141; __utma=94650624.1528031140.1519100301.1526203078.1526379055.7; __utmc=94650624; __utmz=94650624.1526379055.7.5.utmcsr=sogou.com|utmccn=(referral)|utmcmd=referral|utmcct=/link; __utmb=94650624.17.10.1526379055",
@@ -70,7 +76,6 @@ def get_pages(url):
     encSeckey = get_encSecKey()
     json_text = get_json(url, params, encSeckey).decode()
     json_dict = json.loads(json_text)
-    print(json_text)
     comments_num = int(json_dict['total'])
     if (comments_num % 20 == 0):
         pages = comments_num / 20
@@ -79,17 +84,24 @@ def get_pages(url):
     print("一共有%d页评论, %d条评论" % (pages, comments_num))
     return pages
 
-def get_comments(url, pages):
-    comments = list()
+
+def get_comments(music_id):
+    url = 'https://music.163.com/weapi/v1/resource/comments/R_SO_4_' + music_id + '?csrf_token='
+    pages = get_pages(url)
+    comments = []
     for page in range(pages):
-        params = get_params(page + 1)
-        encSeckey = get_encSecKey()
-        json_text = get_json(url, params, encSeckey).decode()
-        json_dict = json.loads(json_text)
-        for item in json_dict['comments']:
-            content = item['content']
-            comments.append(content)
-        print("第%d页抓取完毕" % (page + 1))
+        try:
+            params = get_params(page + 1)
+            encSeckey = get_encSecKey()
+            json_text = get_json(url, params, encSeckey).decode()
+            json_dict = json.loads(json_text)
+            for item in json_dict['comments']:
+                content = item['content']
+                comments.append(content)
+            print("第%d页抓取完毕" % (page + 1))
+        except BaseException:
+            print("第%d页抓取出错" % (page + 1))
+
     return comments
 
 
@@ -101,8 +113,10 @@ def save_to_file(comments, filename):
 
 
 if __name__ == '__main__':
-    url = 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_557579631?csrf_token='
-    pages = get_pages(url)
-    comments = get_comments(url=url, pages=pages)
+    # 网易云音乐网页版中的一首歌的播放界面就有对应音乐的id
+    music_id = '33346934'
+    comments = get_comments(music_id=music_id)
+    # 这里的filename可以随便命名，但是后面的生成词云图要对应加载
     save_to_file(comments=comments, filename="test.txt")
+
 
