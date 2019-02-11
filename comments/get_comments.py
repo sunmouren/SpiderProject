@@ -5,13 +5,6 @@
 @time: 2018/5/12 22:42
 @desc: 爬去网易云音乐全部评论
 """
-
-import base64
-import json
-import requests
-from Crypto.Cipher import AES
-
-
 import base64
 import json
 import requests
@@ -118,5 +111,7 @@ if __name__ == '__main__':
     comments = get_comments(music_id=music_id)
     # 这里的filename可以随便命名，但是后面的生成词云图要对应加载
     save_to_file(comments=comments, filename="test.txt")
+
+
 
 
