@@ -1,4 +1,3 @@
 requests
-Crypto
 jieba
 wordcloud
